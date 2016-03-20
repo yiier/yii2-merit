@@ -1,0 +1,21 @@
+{
+    "name": "yiier/yii2-merit",
+    "description": "用于实现积分，等级功能的设计",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension","merit","reputation"],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "forecho",
+            "email": "caizhenghai@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "yiier\\merit\\": ""
+        }
+    }
+}
