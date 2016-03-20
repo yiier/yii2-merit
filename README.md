@@ -46,4 +46,5 @@ class Controller extends \yii\web\Controller
             MeritBehavior::className(),
         ];
     }
+}
 ```
