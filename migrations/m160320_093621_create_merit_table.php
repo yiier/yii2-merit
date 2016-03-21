@@ -51,7 +51,7 @@ class m160320_093621_create_merit_table extends Migration
             'id' => Schema::TYPE_PK,
             'user_id' => Schema::TYPE_INTEGER . " UNSIGNED DEFAULT NULL COMMENT '用户ID'",
             'type' => Schema::TYPE_INTEGER . "(2) DEFAULT 1 COMMENT '分类 1:积分 2:声望 3:徽章'",
-            'merit' => Schema::TYPE_INTEGER . " UNSIGNED DEFAULT NULL COMMENT '总值'",
+            'merit' => Schema::TYPE_INTEGER . " DEFAULT NULL COMMENT '总值'",
             'created_at' => Schema::TYPE_INTEGER . " UNSIGNED NOT NULL DEFAULT '0' COMMENT '创建时间'",
             'updated_at' => Schema::TYPE_INTEGER . " UNSIGNED NOT NULL DEFAULT '0' COMMENT '更新时间'",
         ], $this->tableOptions);

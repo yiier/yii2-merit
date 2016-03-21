@@ -26,8 +26,26 @@ class MeritBehavior extends Behavior
     public function afterAction()
     {
         if (!Yii::$app->user->isGuest) {
-            if ($meritTemplate = $this->hasMeritTemplate()) {
-                return $this->update($meritTemplate);
+            if ($meritTemplates = $this->hasMeritTemplate()) {
+                /** @var  MeritTemplate $meritTemplate */
+                foreach ($meritTemplates as $meritTemplate) {
+                    switch ($meritTemplate->rule_key) {
+                        case 2:
+                            if ($meritTemplate->rule_value <= $this->getMeritLogTimes($meritTemplate, Yii::$app->user->id)) {
+                                return false;
+                            }
+                            break;
+                        case 1:
+                            if ($meritTemplate->rule_value <= $this->getMeritLogDay($meritTemplate, Yii::$app->user->id)) {
+                                return false;
+                            }
+                            break;
+                        default:
+                            # code...
+                            break;
+                    }
+                    $this->update($meritTemplate);
+                }
             }
         }
         return false;
@@ -36,33 +54,20 @@ class MeritBehavior extends Behavior
     public function hasMeritTemplate()
     {
         $uniqueId = Yii::$app->controller->action->uniqueId;
+        // 必须是 GET 或者 POST 请求
         if (!in_array(Yii::$app->request->method, array_keys(MeritTemplate::getMethods()))) {
             return false;
         }
+
         $method = MeritTemplate::getMethods()[Yii::$app->request->method];
-        /** @var MeritTemplate $model */
-        $model = MeritTemplate::find()
+        // 支持同一个 $uniqueId 不同 Type
+        $meritTemplates = MeritTemplate::find()
             ->where(['unique_id' => $uniqueId, 'status' => MeritTemplate::STATUS_ACTIVE, 'method' => $method])
-            ->one();
-        if (!$model) {
+            ->all();
+        if (!$meritTemplates) {
             return false;
         }
-        switch ($model->rule_key) {
-            case 2:
-                if ($model->rule_value <= $this->getMeritLogTimes($method, Yii::$app->user->id)) {
-                    return false;
-                }
-                break;
-            case 1:
-                if ($model->rule_value <= $this->getMeritLogDay($method, Yii::$app->user->id)) {
-                    return false;
-                }
-                break;
-            default:
-                # code...
-                break;
-        }
-        return $model;
+        return $meritTemplates;
     }
 
     /**
@@ -92,7 +97,10 @@ class MeritBehavior extends Behavior
             ->count();
     }
 
-
+    /**
+     * @param MeritTemplate $meritTemplate
+     * @throws Exception
+     */
     public function update(MeritTemplate $meritTemplate)
     {
         $meritLog = new MeritLog();
@@ -102,14 +110,16 @@ class MeritBehavior extends Behavior
         try {
             /** @var Merit $userMerit */
             $userMerit = Merit::findOne(['user_id' => $userId, 'type' => $meritTemplate->type]);
+            // is sub 判断是否是减法
+            $actionSub = ($meritTemplate->action_type == MeritTemplate::ACTIVE_TYPE_SUB);
             if ($userMerit) {
                 $userMerit->setAttributes([
-                    'merit' => $userMerit->merit + $meritTemplate->increment
+                    'merit' => call_user_func($actionSub ? 'bcsub' : 'bcadd', $userMerit->merit, $meritTemplate->increment)
                 ]);
             } else {
                 $userMerit = new Merit();
                 $userMerit->setAttributes([
-                    'merit' => $meritTemplate->increment,
+                    'merit' => ($actionSub ? '-' : '') . $meritTemplate->increment,
                     'user_id' => $userId,
                     'type' => $meritTemplate->type,
                 ]);
@@ -117,24 +127,27 @@ class MeritBehavior extends Behavior
             if (!$userMerit->save()) {
                 throw new Exception(array_values($userMerit->getFirstErrors())[0]);
             }
+            $description = $meritTemplate->title . ': '
+                . MeritTemplate::getActionTypes()[$meritTemplate->action_type]
+                . $meritTemplate->increment
+                . MeritTemplate::getTypes()[$meritTemplate->type];
 
             $meritLog->setAttributes([
                 'user_id' => $userId,
                 'merit_template_id' => $meritTemplate->id,
                 'type' => $meritTemplate->type,
-                'description' => $meritTemplate->title . ': ' . MeritTemplate::getActionTypes()[$meritTemplate->action_type] . $meritTemplate->increment,
+                'description' => $description,
                 'action_type' => $meritTemplate->action_type,
                 'increment' => $meritTemplate->increment,
+                'created_at' => $meritTemplate->created_at,
             ]);
             if (!$meritLog->save()) {
                 throw new Exception(array_values($meritLog->getFirstErrors())[0]);
             }
 
             $transaction->commit();
-            return true;
         } catch (Exception $e) {
             $transaction->rollBack();
-            return false;
         }
 
     }

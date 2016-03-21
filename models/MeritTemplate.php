@@ -42,6 +42,16 @@ class MeritTemplate extends \yii\db\ActiveRecord
     const STATUS_DELETE = 0;
 
     /**
+     * @var  int 减法
+     */
+    const ACTIVE_TYPE_SUB = 1;
+
+    /**
+     * @var int 加法
+     */
+    const ACTIVE_TYPE_ADD = 2;
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -95,6 +105,15 @@ class MeritTemplate extends \yii\db\ActiveRecord
         return [
             1 => '-',
             2 => '+',
+        ];
+    }
+
+    public static function getTypes()
+    {
+        return [
+            1 => '积分',
+            2 => '声望',
+            3 => '徽章',
         ];
     }
 }
