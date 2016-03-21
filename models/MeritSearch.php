@@ -5,7 +5,6 @@ namespace yiier\merit\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use yiier\merit\models\Merit;
 
 /**
  * MeritSearch represents the model behind the search form about `yiier\merit\models\Merit`.

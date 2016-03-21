@@ -43,6 +43,7 @@ class m160320_093621_create_merit_table extends Migration
             'increment' => Schema::TYPE_INTEGER . " UNSIGNED DEFAULT NULL COMMENT '变化值'",
             'status' => Schema::TYPE_BOOLEAN . " DEFAULT 1 COMMENT '状态 0暂停 1开启'",
             'created_at' => Schema::TYPE_INTEGER . " UNSIGNED NOT NULL DEFAULT '0' COMMENT '创建时间'",
+            'updated_at' => Schema::TYPE_INTEGER . " UNSIGNED NOT NULL DEFAULT '0' COMMENT '更新时间'",
         ], $this->tableOptions);
         $this->createIndex('type', '{{%merit_template}}', 'type');
         $this->createIndex('unique_id', '{{%merit_template}}', 'unique_id');
@@ -73,7 +74,6 @@ class m160320_093621_create_merit_table extends Migration
         $this->createIndex('type', '{{%merit_log}}', 'type');
         $this->createIndex('user_id', '{{%merit_log}}', 'user_id');
         $this->createIndex('merit_template_id', '{{%merit_log}}', 'merit_template_id');
-        $this->execute($this->initSql());
     }
 
     public function down()
@@ -94,19 +94,5 @@ class m160320_093621_create_merit_table extends Migration
                 DROP TABLE IF EXISTS {{%merit}};
                 DROP TABLE IF EXISTS {{%merit_log}};
               ';
-    }
-
-    /**
-     * @return string SQL to insert first user
-     */
-    private function initSql()
-    {
-        $time = time();
-        return "INSERT INTO {{%merit_template}} (`type`, `title`,`unique_id`, `increment`, `created_at`) VALUES
-                ('1', '会员登录', 'site/login', 1, {$time}),
-                ('1', '会员发帖', 'topic/default/create', 10, {$time}),
-                ('1', '会员发动弹', 'tweet/default/create', 5, {$time}),
-                ('1', '会员帖子评论', 'topic/comment/create', 2, {$time})
-                ";
     }
 }

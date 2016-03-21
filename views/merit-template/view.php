@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yiier\merit\models\MeritTemplate;
 
 /* @var $this yii\web\View */
 /* @var $model yiier\merit\models\MeritTemplate */
@@ -29,17 +30,33 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'type',
             'title',
+            [
+                'attribute' => 'type',
+                'value' => MeritTemplate::getTypes()[$model->type]
+            ],
             'unique_id',
-            'method',
-            'event',
-            'action_type',
-            'rule_key',
-            'rule_value',
+            [
+                'attribute' => 'method',
+                'value' => MeritTemplate::getMethods()[$model->method]
+            ],
+            // 'event',
+            [
+                'attribute' => 'action_type',
+                'value' => MeritTemplate::getActionTypes()[$model->action_type]
+            ],
             'increment',
-            'status',
-            'created_at',
+            [
+                'attribute' => 'rule_key',
+                'value' => MeritTemplate::getRuleKeys()[$model->rule_key]
+            ],
+            'rule_value',
+            [
+                'attribute' => 'status',
+                'value' => MeritTemplate::getStatuses()[$model->status]
+            ],
+            'created_at:datetime',
+            'updated_at:datetime',
         ],
     ]) ?>
 

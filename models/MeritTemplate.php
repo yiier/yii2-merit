@@ -8,6 +8,7 @@
 namespace yiier\merit\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 use yiier\merit\Module;
 
 /**
@@ -25,6 +26,7 @@ use yiier\merit\Module;
  * @property integer $increment
  * @property integer $status
  * @property integer $created_at
+ * @property integer $updated_at
  */
 class MeritTemplate extends \yii\db\ActiveRecord
 {
@@ -53,6 +55,17 @@ class MeritTemplate extends \yii\db\ActiveRecord
     const ACTIVE_TYPE_ADD = 2;
 
     /**
+     * 自动更新created_at和updated_at时间
+     * @return array
+     */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+        ];
+    }
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -66,7 +79,7 @@ class MeritTemplate extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'method', 'event', 'action_type', 'rule_key', 'rule_value', 'increment', 'status', 'created_at'], 'integer'],
+            [['type', 'method', 'event', 'action_type', 'rule_key', 'rule_value', 'increment', 'status', 'created_at', 'updated_at'], 'integer'],
             [['title', 'unique_id'], 'required'],
             [['title', 'unique_id'], 'string', 'max' => 255]
         ];
@@ -90,6 +103,7 @@ class MeritTemplate extends \yii\db\ActiveRecord
             'increment' => Yii::t('app', '变化值'),
             'status' => Yii::t('app', '状态'),
             'created_at' => Yii::t('app', '创建时间'),
+            'updated_at' => Yii::t('app', '更新时间'),
         ];
     }
 

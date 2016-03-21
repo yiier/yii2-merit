@@ -9,6 +9,7 @@ namespace yiier\merit\models;
 
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%merit}}".
@@ -30,9 +31,7 @@ class Merit extends \yii\db\ActiveRecord
     public function behaviors()
     {
         return [
-            'timestamp' => [
-                'class' => 'yii\behaviors\TimestampBehavior',
-            ],
+            TimestampBehavior::className(),
         ];
     }
 

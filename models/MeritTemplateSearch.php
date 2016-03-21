@@ -5,7 +5,6 @@ namespace yiier\merit\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use yiier\merit\models\MeritTemplate;
 
 /**
  * MeritTemplateSearch represents the model behind the search form about `yiier\merit\models\MeritTemplate`.
@@ -18,7 +17,7 @@ class MeritTemplateSearch extends MeritTemplate
     public function rules()
     {
         return [
-            [['id', 'type', 'method', 'event', 'action_type', 'rule_key', 'rule_value', 'increment', 'status', 'created_at'], 'integer'],
+            [['id', 'type', 'method', 'event', 'action_type', 'rule_key', 'rule_value', 'increment', 'status', 'created_at', 'updated_at'], 'integer'],
             [['title', 'unique_id'], 'safe'],
         ];
     }
@@ -66,6 +65,7 @@ class MeritTemplateSearch extends MeritTemplate
             'increment' => $this->increment,
             'status' => $this->status,
             'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
