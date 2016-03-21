@@ -8,6 +8,7 @@
 namespace yiier\merit\models;
 
 use Yii;
+use yiier\merit\Module;
 
 /**
  * This is the model class for table "{{%merit_template}}".
@@ -119,11 +120,7 @@ class MeritTemplate extends \yii\db\ActiveRecord
 
     public static function getTypes()
     {
-        return [
-            1 => '积分',
-            2 => '声望',
-            3 => '徽章',
-        ];
+        return Module::getInstance()->types;
     }
 
     public static function getStatuses()
