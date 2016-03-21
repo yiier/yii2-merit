@@ -48,3 +48,24 @@ class Controller extends \yii\web\Controller
     }
 }
 ```
+
+Once the extension is installed, simply modify your application configuration as follows:
+
+```php
+return [
+    'modules' => [
+        'merit' => [
+            'class' => 'yiier\merit\Module',
+            'types' => [1 => '积分', 2 => '声望'] // Optional
+        ],
+    ],
+];
+```
+
+You can then access Merit Module through the following URL:
+
+```
+http://localhost/path/to/index.php?r=merit/merit
+http://localhost/path/to/index.php?r=merit/merit-log
+http://localhost/path/to/index.php?r=merit/merit-template
+```

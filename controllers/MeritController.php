@@ -32,7 +32,6 @@ class MeritController extends Controller
      */
     public function actionIndex()
     {
-        pr(\yiier\merit\Module::getInstance()->types);
         $searchModel = new MeritSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
