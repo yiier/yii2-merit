@@ -15,6 +15,7 @@ use Yii;
  *
  * @property integer $id
  * @property integer $user_id
+ * @property string $username
  * @property integer $type
  * @property integer $merit
  * @property integer $created_at
@@ -49,7 +50,8 @@ class Merit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'type', 'merit', 'created_at', 'updated_at'], 'integer']
+            [['user_id', 'type', 'merit', 'created_at', 'updated_at'], 'integer'],
+            [['username'], 'string', 'max' => 20]
         ];
     }
 
@@ -61,7 +63,8 @@ class Merit extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'user_id' => Yii::t('app', '用户ID'),
-            'type' => Yii::t('app', '分类 1:积分 2:声望 3:徽章'),
+            'username' => Yii::t('app', '用户名'),
+            'type' => Yii::t('app', '类型'),
             'merit' => Yii::t('app', '总值'),
             'created_at' => Yii::t('app', '创建时间'),
             'updated_at' => Yii::t('app', '更新时间'),

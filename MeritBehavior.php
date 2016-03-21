@@ -55,11 +55,11 @@ class MeritBehavior extends Behavior
     {
         $uniqueId = Yii::$app->controller->action->uniqueId;
         // 必须是 GET 或者 POST 请求
-        if (!in_array(Yii::$app->request->method, array_keys(MeritTemplate::getMethods()))) {
+        if (!in_array(Yii::$app->request->method, MeritTemplate::getMethods())) {
             return false;
         }
 
-        $method = MeritTemplate::getMethods()[Yii::$app->request->method];
+        $method = array_flip(MeritTemplate::getMethods())[Yii::$app->request->method];
         // 支持同一个 $uniqueId 不同 Type
         $meritTemplates = MeritTemplate::find()
             ->where(['unique_id' => $uniqueId, 'status' => MeritTemplate::STATUS_ACTIVE, 'method' => $method])
@@ -104,12 +104,12 @@ class MeritBehavior extends Behavior
     public function update(MeritTemplate $meritTemplate)
     {
         $meritLog = new MeritLog();
-        $userId = \Yii::$app->user->identity->getId();
+        $user = \Yii::$app->user->identity;
 
         $transaction = \Yii::$app->db->beginTransaction();
         try {
             /** @var Merit $userMerit */
-            $userMerit = Merit::findOne(['user_id' => $userId, 'type' => $meritTemplate->type]);
+            $userMerit = Merit::findOne(['user_id' => $user->getId(), 'type' => $meritTemplate->type]);
             // is sub 判断是否是减法
             $actionSub = ($meritTemplate->action_type == MeritTemplate::ACTIVE_TYPE_SUB);
             if ($userMerit) {
@@ -120,7 +120,8 @@ class MeritBehavior extends Behavior
                 $userMerit = new Merit();
                 $userMerit->setAttributes([
                     'merit' => ($actionSub ? '-' : '') . $meritTemplate->increment,
-                    'user_id' => $userId,
+                    'user_id' => $user->getId(),
+                    'username' => $user->username,
                     'type' => $meritTemplate->type,
                 ]);
             }
@@ -133,7 +134,8 @@ class MeritBehavior extends Behavior
                 . MeritTemplate::getTypes()[$meritTemplate->type];
 
             $meritLog->setAttributes([
-                'user_id' => $userId,
+                'user_id' => $user->getId(),
+                'username' => $user->username,
                 'merit_template_id' => $meritTemplate->id,
                 'type' => $meritTemplate->type,
                 'description' => $description,

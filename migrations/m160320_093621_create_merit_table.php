@@ -32,7 +32,7 @@ class m160320_093621_create_merit_table extends Migration
         $this->execute($this->delMeritTable());
         $this->createTable('{{%merit_template}}', [
             'id' => Schema::TYPE_PK,
-            'type' => Schema::TYPE_INTEGER . "(2) DEFAULT 1 COMMENT '分类 1:积分 2:声望 3:徽章'",
+            'type' => Schema::TYPE_INTEGER . "(2) DEFAULT 1 COMMENT '类型 1:积分 2:声望 3:徽章'",
             'title' => Schema::TYPE_STRING . " NOT NULL COMMENT '标题'",
             'unique_id' => Schema::TYPE_STRING . " NOT NULL COMMENT 'action uniqueId'",
             'method' => Schema::TYPE_INTEGER . "(2) DEFAULT 2 COMMENT '请求方式 1 get 2 post'",
@@ -50,7 +50,8 @@ class m160320_093621_create_merit_table extends Migration
         $this->createTable('{{%merit}}', [
             'id' => Schema::TYPE_PK,
             'user_id' => Schema::TYPE_INTEGER . " UNSIGNED DEFAULT NULL COMMENT '用户ID'",
-            'type' => Schema::TYPE_INTEGER . "(2) DEFAULT 1 COMMENT '分类 1:积分 2:声望 3:徽章'",
+            'username' => Schema::TYPE_STRING . "(20) DEFAULT NULL COMMENT '用户名'",
+            'type' => Schema::TYPE_INTEGER . "(2) DEFAULT 1 COMMENT '类型 1:积分 2:声望 3:徽章'",
             'merit' => Schema::TYPE_INTEGER . " DEFAULT NULL COMMENT '总值'",
             'created_at' => Schema::TYPE_INTEGER . " UNSIGNED NOT NULL DEFAULT '0' COMMENT '创建时间'",
             'updated_at' => Schema::TYPE_INTEGER . " UNSIGNED NOT NULL DEFAULT '0' COMMENT '更新时间'",
@@ -61,8 +62,9 @@ class m160320_093621_create_merit_table extends Migration
         $this->createTable('{{%merit_log}}', [
             'id' => Schema::TYPE_PK,
             'user_id' => Schema::TYPE_INTEGER . " UNSIGNED NULL NULL COMMENT '用户ID'",
+            'username' => Schema::TYPE_STRING . "(20) DEFAULT NULL COMMENT '用户名'",
             'merit_template_id' => Schema::TYPE_INTEGER . " UNSIGNED NULL NULL COMMENT '模板ID'",
-            'type' => Schema::TYPE_INTEGER . "(2) DEFAULT 1 COMMENT '分类 1:积分 2:声望 3:徽章'",
+            'type' => Schema::TYPE_INTEGER . "(2) DEFAULT 1 COMMENT '类型 1:积分 2:声望 3:徽章'",
             'description' => Schema::TYPE_STRING . " NOT NULL COMMENT '描述'",
             'action_type' => Schema::TYPE_INTEGER . "(2) DEFAULT 2 COMMENT '操作类型 1减去 2新增'",
             'increment' => Schema::TYPE_INTEGER . " UNSIGNED DEFAULT NULL COMMENT '变化值'",

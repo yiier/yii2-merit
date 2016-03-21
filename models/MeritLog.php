@@ -14,6 +14,7 @@ use Yii;
  *
  * @property integer $id
  * @property integer $user_id
+ * @property string $username
  * @property integer $merit_template_id
  * @property integer $type
  * @property string $description
@@ -39,6 +40,7 @@ class MeritLog extends \yii\db\ActiveRecord
         return [
             [['user_id', 'merit_template_id', 'type', 'action_type', 'increment', 'created_at'], 'integer'],
             [['description'], 'required'],
+            [['username'], 'string', 'max' => 20],
             [['description'], 'string', 'max' => 255]
         ];
     }
@@ -51,10 +53,11 @@ class MeritLog extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'user_id' => Yii::t('app', '用户ID'),
+            'username' => Yii::t('app', '用户名'),
             'merit_template_id' => Yii::t('app', '模板ID'),
-            'type' => Yii::t('app', '分类 1:积分 2:声望 3:徽章'),
+            'type' => Yii::t('app', '类型'),
             'description' => Yii::t('app', '描述'),
-            'action_type' => Yii::t('app', '操作类型 1减去 2新增'),
+            'action_type' => Yii::t('app', '操作类型'),
             'increment' => Yii::t('app', '变化值'),
             'created_at' => Yii::t('app', '创建时间'),
         ];

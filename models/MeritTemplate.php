@@ -78,16 +78,16 @@ class MeritTemplate extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'type' => Yii::t('app', '分类 1:积分 2:声望 3:徽章'),
+            'type' => Yii::t('app', '类型'),
             'title' => Yii::t('app', '标题'),
             'unique_id' => Yii::t('app', 'action uniqueId'),
-            'method' => Yii::t('app', '请求方式 1 get 2 post'),
+            'method' => Yii::t('app', '请求方式'),
             'event' => Yii::t('app', '事件 0:不绑定'),
-            'action_type' => Yii::t('app', '操作类型 1减去 2新增'),
-            'rule_key' => Yii::t('app', '规则类型 0:不限制 1:按天限制 2:按次限制'),
+            'action_type' => Yii::t('app', '操作类型'),
+            'rule_key' => Yii::t('app', '规则类型'),
             'rule_value' => Yii::t('app', '规则值'),
             'increment' => Yii::t('app', '变化值'),
-            'status' => Yii::t('app', '状态 0暂停 1开启'),
+            'status' => Yii::t('app', '状态'),
             'created_at' => Yii::t('app', '创建时间'),
         ];
     }
@@ -95,16 +95,25 @@ class MeritTemplate extends \yii\db\ActiveRecord
     public static function getMethods()
     {
         return [
-            'GET' => static::MERIT_GET,
-            'POST' => static::MERIT_POST,
+            static::MERIT_POST => 'POST',
+            static::MERIT_GET => 'GET',
         ];
     }
 
     public static function getActionTypes()
     {
         return [
-            1 => '-',
             2 => '+',
+            1 => '-',
+        ];
+    }
+
+    public static function getRuleKeys()
+    {
+        return [
+            Yii::t('app', '不限制'),
+            Yii::t('app', '按天限制'),
+            Yii::t('app', '按次限制'),
         ];
     }
 
@@ -114,6 +123,14 @@ class MeritTemplate extends \yii\db\ActiveRecord
             1 => '积分',
             2 => '声望',
             3 => '徽章',
+        ];
+    }
+
+    public static function getStatuses()
+    {
+        return [
+            self::STATUS_ACTIVE => '开启',
+            self::STATUS_DELETE => '停用',
         ];
     }
 }
