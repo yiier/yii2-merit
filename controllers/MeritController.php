@@ -42,18 +42,6 @@ class MeritController extends Controller
     }
 
     /**
-     * Displays a single Merit model.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
      * Deletes an existing Merit model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
