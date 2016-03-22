@@ -134,7 +134,9 @@ class MeritTemplate extends \yii\db\ActiveRecord
 
     public static function getTypes()
     {
-        return Module::getInstance()->types;
+        /** @var Module $merit */
+        $merit = Yii::$app->getModule('merit');
+        return $merit->types;
     }
 
     public static function getStatuses()
