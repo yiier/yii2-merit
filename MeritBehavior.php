@@ -141,7 +141,7 @@ class MeritBehavior extends Behavior
                 'description' => $description,
                 'action_type' => $meritTemplate->action_type,
                 'increment' => $meritTemplate->increment,
-                'created_at' => $meritTemplate->created_at,
+                'created_at' => time(),
             ]);
             if (!$meritLog->save()) {
                 throw new Exception(array_values($meritLog->getFirstErrors())[0]);
