@@ -113,8 +113,9 @@ class MeritBehavior extends Behavior
             // is sub 判断是否是减法
             $actionSub = ($meritTemplate->action_type == MeritTemplate::ACTIVE_TYPE_SUB);
             if ($userMerit) {
+                $merit = call_user_func($actionSub ? 'bcsub' : 'bcadd', $userMerit->merit, $meritTemplate->increment);
                 $userMerit->setAttributes([
-                    'merit' => call_user_func($actionSub ? 'bcsub' : 'bcadd', $userMerit->merit, $meritTemplate->increment)
+                    'merit' => (integer)$merit
                 ]);
             } else {
                 $userMerit = new Merit();
@@ -126,6 +127,7 @@ class MeritBehavior extends Behavior
                 ]);
             }
             if (!$userMerit->save()) {
+                Yii::error('Merit 操作失败' . json_encode(array_values($userMerit->getFirstErrors())), 'error');
                 throw new Exception(array_values($userMerit->getFirstErrors())[0]);
             }
             $description = $meritTemplate->title . ': '
