@@ -1,5 +1,10 @@
 Reputation engine for Yii2
 ==========================
+[![Latest Stable Version](https://poser.pugx.org/yiier/yii2-merit/v/stable)](https://packagist.org/packages/yiier/yii2-merit) 
+[![Total Downloads](https://poser.pugx.org/yiier/yii2-merit/downloads)](https://packagist.org/packages/yiier/yii2-merit) 
+[![Latest Unstable Version](https://poser.pugx.org/yiier/yii2-merit/v/unstable)](https://packagist.org/packages/yiier/yii2-merit) 
+[![License](https://poser.pugx.org/yiier/yii2-merit/license)](https://packagist.org/packages/yiier/yii2-merit)
+
 用于实现积分，等级功能的设计
 
 Installation
