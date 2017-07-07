@@ -40,6 +40,7 @@ class MeritLog extends \yii\db\ActiveRecord
         return [
             [['user_id', 'merit_template_id', 'type', 'action_type', 'increment', 'created_at'], 'integer'],
             [['description'], 'required'],
+            [['user_id'], 'string', 'max' => 100],
             [['username'], 'string', 'max' => 20],
             [['description'], 'string', 'max' => 255]
         ];

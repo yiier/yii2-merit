@@ -49,7 +49,8 @@ class Merit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'type', 'merit', 'created_at', 'updated_at'], 'integer'],
+            [['type', 'merit', 'created_at', 'updated_at'], 'integer'],
+            [['user_id'], 'string', 'max' => 100],
             [['username'], 'string', 'max' => 20]
         ];
     }
