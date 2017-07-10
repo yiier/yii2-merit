@@ -38,7 +38,7 @@ class MeritLog extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'merit_template_id', 'type', 'action_type', 'increment', 'created_at'], 'integer'],
+            [['merit_template_id', 'type', 'action_type', 'increment', 'created_at'], 'integer'],
             [['description'], 'required'],
             [['user_id'], 'string', 'max' => 100],
             [['username'], 'string', 'max' => 20],
