@@ -9,7 +9,9 @@ namespace yiier\merit;
 use yii\base\Behavior;
 use yii\db\Exception;
 use yii\di\Instance;
+use yii\helpers\VarDumper;
 use yii\web\Controller;
+use yiier\merit\models\Continuous;
 use yiier\merit\models\LevelCalcInterface;
 use yiier\merit\models\Merit;
 use yiier\merit\models\MeritLog;
@@ -107,8 +109,35 @@ class MeritBehavior extends Behavior
     {
         $meritLog = new MeritLog();
         $user = \Yii::$app->user->identity;
-
         $transaction = \Yii::$app->db->beginTransaction();
+
+        if($meritTemplate->events_type == MeritTemplate::EVENTS_TYPE_CONTINUOUS)
+        {
+            $user_id = $user->getId();
+
+            $m = Continuous::find()
+                ->where(['user_id' => $user_id])
+                ->one();
+
+            if(!$m)
+            {
+                $m = new Continuous;
+            }
+
+            $count = $m->count;
+
+            if($count == $m->calc_count() || $m->count != $meritTemplate->continuous_count)
+            {
+                $transaction->commit();
+                return ;
+            }
+
+            if(!$m->save())
+            {
+                throw new Exception(VarDumper::dumpAsString($m->getFirstErrors()));
+            }
+        }
+
         try {
             /** @var Merit $userMerit */
             $userMerit = Merit::findOne(['user_id' => $user->getId(), 'type' => $meritTemplate->type]);
@@ -173,11 +202,10 @@ class MeritBehavior extends Behavior
             }
 
             $transaction->commit();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             Yii::error($e->getMessage(), __METHOD__);
             $transaction->rollBack();
         }
-
     }
 
 }

@@ -27,6 +27,8 @@ use yiier\merit\Module;
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
+ * @property integer events_type
+ * @property integer continuous_count
  */
 class MeritTemplate extends \yii\db\ActiveRecord
 {
@@ -55,6 +57,16 @@ class MeritTemplate extends \yii\db\ActiveRecord
     const ACTIVE_TYPE_ADD = 2;
 
     /**
+     * @var int 普通的事件，比如每天登陆送积分,此为默认类型
+     */
+    const EVENTS_TYPE_NORMAL = 0;
+
+    /**
+     * @var int 连续登陆事件类型
+     */
+    const EVENTS_TYPE_CONTINUOUS = 1;
+
+    /**
      * 自动更新created_at和updated_at时间
      * @return array
      */
@@ -79,7 +91,7 @@ class MeritTemplate extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'method', 'event', 'action_type', 'rule_key', 'rule_value', 'increment', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['type', 'method', 'event', 'action_type', 'rule_key', 'rule_value', 'increment', 'status', 'created_at', 'updated_at', 'events_type', 'continuous_count'], 'integer'],
             [['title', 'unique_id'], 'required'],
             [['title', 'unique_id'], 'string', 'max' => 255]
         ];
@@ -104,6 +116,8 @@ class MeritTemplate extends \yii\db\ActiveRecord
             'status' => Yii::t('app', '状态'),
             'created_at' => Yii::t('app', '创建时间'),
             'updated_at' => Yii::t('app', '更新时间'),
+            'events_type' => Yii::t('app', '事件类型'),
+            'continuous_count' => Yii::t('app', '持续次数')
         ];
     }
 
@@ -144,6 +158,14 @@ class MeritTemplate extends \yii\db\ActiveRecord
         return [
             self::STATUS_ACTIVE => '开启',
             self::STATUS_DELETE => '停用',
+        ];
+    }
+
+    public static function getEventsType()
+    {
+        return [
+            self::EVENTS_TYPE_NORMAL => '做一次，就有一次',
+            self::EVENTS_TYPE_CONTINUOUS => '连续做，送额外奖励',
         ];
     }
 }

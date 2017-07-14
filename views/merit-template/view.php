@@ -55,6 +55,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'status',
                 'value' => MeritTemplate::getStatuses()[$model->status]
             ],
+            [
+                'attribute' => 'events_type',
+                'value' => function ($data) {
+                    return MeritTemplate::getEventsType()[$data->events_type];
+                }
+            ],
+            'continuous_count',
             'created_at:datetime',
             'updated_at:datetime',
         ],

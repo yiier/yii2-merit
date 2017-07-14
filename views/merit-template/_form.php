@@ -33,6 +33,10 @@ use yiier\merit\models\MeritTemplate;
 
     <?= $form->field($model, 'status')->dropDownList(MeritTemplate::getStatuses()) ?>
 
+    <?= $form->field($model, 'events_type')->dropDownList(MeritTemplate::getEventsType()) ?>
+
+    <?= $form->field($model,  'continuous_count')->textInput() ?>
+
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

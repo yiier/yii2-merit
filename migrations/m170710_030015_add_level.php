@@ -23,7 +23,8 @@ class m170710_030015_add_level extends Migration
     public function safeDown()
     {
         echo "m170710_030015_add_level cannot be reverted.\n";
-
+        $this->dropColumn('{{%merit}}','level');
+        $this->dropColumn('{{%merit}}','pos_accu_merit');
         return false;
     }
 
