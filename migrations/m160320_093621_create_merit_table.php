@@ -50,7 +50,7 @@ class m160320_093621_create_merit_table extends Migration
 
         $this->createTable('{{%merit}}', [
             'id' => Schema::TYPE_PK,
-            'user_id' => Schema::TYPE_INTEGER . " UNSIGNED DEFAULT NULL COMMENT '用户ID'",
+            'user_id' => $this->string(100)->notNull()->defaultValue('')->comment('用户ID') ,
             'username' => Schema::TYPE_STRING . "(20) DEFAULT NULL COMMENT '用户名'",
             'type' => Schema::TYPE_INTEGER . "(2) DEFAULT 1 COMMENT '类型 1:积分 2:声望 3:徽章'",
             'merit' => Schema::TYPE_INTEGER . " DEFAULT NULL COMMENT '总值'",
@@ -62,7 +62,7 @@ class m160320_093621_create_merit_table extends Migration
 
         $this->createTable('{{%merit_log}}', [
             'id' => Schema::TYPE_PK,
-            'user_id' => Schema::TYPE_INTEGER . " UNSIGNED NULL NULL COMMENT '用户ID'",
+            'user_id' => $this->string(100)->notNull()->defaultValue('')->comment('用户ID') ,
             'username' => Schema::TYPE_STRING . "(20) DEFAULT NULL COMMENT '用户名'",
             'merit_template_id' => Schema::TYPE_INTEGER . " UNSIGNED NULL NULL COMMENT '模板ID'",
             'type' => Schema::TYPE_INTEGER . "(2) DEFAULT 1 COMMENT '类型 1:积分 2:声望 3:徽章'",

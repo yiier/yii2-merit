@@ -7,9 +7,11 @@ use yiier\merit\models\MeritTemplate;
 /* @var $this yii\web\View */
 /* @var $searchModel yiier\merit\models\MeritSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $levelCalc \yiier\merit\models\LevelCalcInterface*/
 
 $this->title = Yii::t('app', 'Merits');
 $this->params['breadcrumbs'][] = $this->title;
+$levelCalc =  \yii\di\Instance::ensure(Yii::$app->params['yiier\merit\models\LevelCalc']);
 ?>
 <div class="merit-index">
 
@@ -30,6 +32,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             'merit',
+            'pos_accu_merit',
+            'level',
+            [
+                'attribute' => 'level',
+                'label' => '等级名称',
+                'value' => function ($data) use ($levelCalc) {
+                    return $levelCalc->get_levelName($data->level);
+                }
+            ],
             'created_at:datetime',
             'updated_at:datetime',
 

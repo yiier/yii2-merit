@@ -60,6 +60,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     return MeritTemplate::getStatuses()[$data->status];
                 }
             ],
+            [
+                'attribute' => 'events_type',
+                'value' => function ($data) {
+                    return MeritTemplate::getEventsType()[$data->events_type];
+                }
+            ],
+            'continuous_count',
             'created_at:datetime',
             'updated_at:datetime',
 

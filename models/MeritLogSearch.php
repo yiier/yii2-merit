@@ -17,7 +17,8 @@ class MeritLogSearch extends MeritLog
     public function rules()
     {
         return [
-            [['id', 'user_id', 'merit_template_id', 'type', 'action_type', 'increment', 'created_at'], 'integer'],
+            [['id', 'merit_template_id', 'type', 'action_type', 'increment', 'created_at'], 'integer'],
+            [['user_id'], 'string', 'max' => 100],
             [['description', 'username'], 'safe'],
         ];
     }
