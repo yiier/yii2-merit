@@ -122,6 +122,7 @@ class MeritBehavior extends Behavior
             if(!$m)
             {
                 $m = new Continuous;
+                $m->user_id  = $user_id;
             }
 
             $count = $m->count;
